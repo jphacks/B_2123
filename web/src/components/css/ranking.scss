@@ -1,0 +1,17 @@
+.rank {
+  background-color: #ffd700;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  &__2 {
+    background-color: #c0c0c0;
+  }
+  &__3 {
+    background-color: #815a2b;
+  }
+}
