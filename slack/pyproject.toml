@@ -9,8 +9,10 @@ license = "MIT"
 python = "^3.9"
 slack-bolt = "^1.9.3"
 requests = "^2.26.0"
+slackbot = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
+isort = "^5.9.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
