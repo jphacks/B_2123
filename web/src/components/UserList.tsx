@@ -1,11 +1,4 @@
-import {
-  List,
-  ListItem,
-  Paper,
-  ListItemText,
-  ListItemIcon,
-  Divider,
-} from "@mui/material";
+import { List, ListItem, Paper, ListItemText, Divider } from "@mui/material";
 import React from "react";
 
 export const UserList = () => {
