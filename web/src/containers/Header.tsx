@@ -6,7 +6,7 @@ export const Header = () => {
     <div className="header">
       <div className="header__title_wrapper">
         <div className="header__subtitle">slackで管理ができる</div>
-        <h1 className="header__title">筋トレサイト</h1>
+        <h1 className="header__title">NIKUTAI</h1>
       </div>
     </div>
   );
