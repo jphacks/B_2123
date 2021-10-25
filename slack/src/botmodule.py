@@ -1,10 +1,9 @@
 from datetime import time
-from slackbot.bot import respond_to
-from slackbot.bot import default_reply
-from slackbot.bot import listen_to
-import slackbot_settings
+
+from slackbot.bot import default_reply, listen_to, respond_to
 
 import func as fx
+import slackbot_settings
 
 # 0 通常
 # 1 ユーザー登録
