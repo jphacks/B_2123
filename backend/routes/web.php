@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Menu;
 use Illuminate\Support\Facades\Route;
+use PhpParser\Node\Stmt\TryCatch;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +16,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    try {
+        $menu = Menu::find(10);
+        $menu = 1;
+        if($menu == null) {
+            throw new Exception("Error Processing Request");
+        }
+    } catch (\Exception $e) {
+        $e->getMessage();
+        return $e->getMessage();
+    }
+    return response()->json(['message' => 'aaaaaaa'], 404);
 });
