@@ -22,17 +22,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-// ユーザー一覧
-Route::get('/users', [UserController::class, 'index']);
+// グループのユーザー一覧
+Route::get('/users/{groupId}', [UserController::class, 'index_group']);
 // ユーザー登録
 Route::post('/users', [UserController::class, 'create']);
 // メニュー一覧
 Route::get('/menus', [MenuController::class, 'index']);
-// 記録のランキング
-Route::get('/records', [UserMenuController::class, 'index']);
+// グループの記録のランキング
+Route::get('/records/{groupId}', [UserMenuController::class, 'index_group']);
 // 筋トレ記録登録
 Route::post('/records', [UserMenuController::class, 'create'])->middleware('is_created_user');
 
-
-
-Route::get('/users/{groupId}', [UserController::class], 'index_group');

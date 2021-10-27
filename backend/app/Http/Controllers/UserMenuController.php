@@ -13,6 +13,11 @@ class UserMenuController extends Controller
     $ranking = $userMenu->orderBy('numberOfTimes', 'desc')->take(10)->join('users', 'user_menus.userId', '=', 'users.userId')->get();
     return response()->json(['ranking' => $ranking]);
   }
+  public function index_group($groupId, UserMenu $userMenu)
+  {
+    $ranking = $userMenu->join('users', 'user_menus.userId', '=', 'users.userId')->where('groupId', $groupId)->orderBy('numberOfTimes', 'desc')->take(10)->get();
+    return response()->json(['ranking' => $ranking]);
+  }
   public function create(Request $request, UserMenu $userMenu)
   {
     $params = $request->only(['userId', 'menuId', 'numberOfTimes']);

@@ -15,16 +15,4 @@ use PhpParser\Node\Stmt\TryCatch;
 |
 */
 
-Route::get('/', function () {
-    try {
-        $menu = Menu::find(10);
-        $menu = 1;
-        if($menu == null) {
-            throw new Exception("Error Processing Request");
-        }
-    } catch (\Exception $e) {
-        $e->getMessage();
-        return $e->getMessage();
-    }
-    return response()->json(['message' => 'aaaaaaa'], 404);
-});
+

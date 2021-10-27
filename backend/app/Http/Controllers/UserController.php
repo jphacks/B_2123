@@ -16,12 +16,13 @@ class UserController extends Controller
     }
     public function create(Request $request,User $user)
     {
-        $params = $request->only(['userId', 'slackName']);
+        $params = $request->only(['userId', 'slackName', 'groupId']);
         Log::alert($params);
         try {
             $rules = [
                 'userId' => ['required', 'string'],
-                'slackName' => ['required', 'string']
+                'slackName' => ['required', 'string'],
+                'groupId' => ['required', 'string']
             ];
             $validator = Validator::make($params, $rules);
             if($validator->fails()) {
@@ -41,6 +42,7 @@ class UserController extends Controller
     }
     public function index_group($groupId,User $user)
     {
-        // $user->where('');
+        $users = $user->where('groupId', $groupId)->get();
+        return response()->json(['users' => $users]);
     }
 }

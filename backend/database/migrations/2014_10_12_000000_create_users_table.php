@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->string('userId');
             $table->string('slackName');
-            // $table->integer('groupId');
+            $table->string('groupId');
             $table->timestamps();
         });
     }

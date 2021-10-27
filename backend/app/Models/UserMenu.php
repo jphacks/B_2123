@@ -14,11 +14,6 @@ class UserMenu extends Model
         'menuId',
         'numberOfTimes'
     ];
-    //
-    public function createValidate(Type $var = null)
-    {
-        # code...
-    }
     // リレーションシップ
     public function user()
     {

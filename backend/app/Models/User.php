@@ -31,6 +31,7 @@ class User extends Authenticatable
     protected $fillable = [
         'userId',
         'slackName',
+        'groupId',
     ];
     public function userId_check($userId)
     {

@@ -18,7 +18,6 @@ class CreateUserMenusTable extends Migration
             $table->string('userId');
             $table->integer('menuId');
             $table->integer('numberOfTimes');
-            $table->string('groupId');
             $table->timestamps();
         });
     }
