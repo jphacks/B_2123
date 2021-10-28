@@ -32,4 +32,3 @@ Route::get('/menus', [MenuController::class, 'index']);
 Route::get('/records/{groupId}', [UserMenuController::class, 'index_group']);
 // 筋トレ記録登録
 Route::post('/records', [UserMenuController::class, 'create'])->middleware('is_created_user');
-

@@ -45,6 +45,6 @@ class User extends Authenticatable
     // リレーションシップ
     public function menus()
     {
-        $this->hasMany('\App\Model\UserMenu', 'userId');
+        return $this->hasMany('\App\Model\UserMenu', 'userId');
     }
 }

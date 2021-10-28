@@ -17,10 +17,10 @@ class UserMenu extends Model
     // リレーションシップ
     public function user()
     {
-        $this->belongsTo('\App\Models\User', 'userId');
+        return $this->belongsTo('\App\Models\User', 'userId');
     }
     public function menu()
     {
-        $this->belongsTo('\App\Models\Menu', 'menuId');
+        return $this->belongsTo('\App\Models\Menu', 'menuId');
     }
 }
