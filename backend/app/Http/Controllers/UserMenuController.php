@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Validator;
 
 class UserMenuController extends Controller
 {
-  public function index(UserMenu $userMenu)
+  public function index(Request $request, UserMenu $userMenu)
   {
-    $ranking = $userMenu->orderBy('numberOfTimes', 'desc')->take(10)->join('users', 'user_menus.userId', '=', 'users.userId')->get();
-    return response()->json($ranking);
+    $userId = $request->userId;
+    $records = $userMenu->where('userId', $userId)->get();
+    return response()->json($records);
   }
   public function index_group($groupId, Group $group, User $user)
   {

@@ -17,18 +17,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
-// グループのユーザー一覧
-Route::get('/users/{groupId}', [UserController::class, 'index_group']);
 // ユーザー登録
 Route::post('/users', [UserController::class, 'create']);
+// グループのユーザー一覧
+Route::get('/users/{groupId}', [UserController::class, 'index_group']);
 // メニュー一覧
 Route::get('/menus', [MenuController::class, 'index']);
-// グループの記録のランキング
-Route::get('/records/{groupId}', [UserMenuController::class, 'index_group']);
+// 自分の記録のランキング
+Route::get('/records', [UserMenuController::class, 'index'])->middleware('is_created_user');
 // 筋トレ記録登録
 Route::post('/records', [UserMenuController::class, 'create'])->middleware('is_created_user');
+// グループの記録のランキング
+// Route::get('/records/{groupId}', [UserMenuController::class, 'index_group']);
+Route::get('/records/ranking/{groupId}', [UserMenuController::class, 'index_group']);
+
+
