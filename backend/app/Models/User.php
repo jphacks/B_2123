@@ -6,11 +6,22 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+
+    // プライマリーキーのカラム名
+    protected $primaryKey = 'userId';
+
+    // プライマリーキーの型
+    protected $keyType = 'string';
+
+    // プライマリーキーは自動連番か？
+    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
@@ -18,27 +29,22 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'userId',
+        'slackName',
+        'groupId',
     ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function userId_check($userId)
+    {
+        $res = $this->where('userId', $userId)->first();
+        if(isset($res)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // リレーションシップ
+    public function menus()
+    {
+        return $this->hasMany('\App\Model\UserMenu', 'userId');
+    }
 }

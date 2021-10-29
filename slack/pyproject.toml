@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "slack"
+version = "0.1.0"
+description = ""
+authors = ["mio2 <motty.mio2@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+slack-bolt = "^1.9.3"
+requests = "^2.26.0"
+slackbot = "^1.0.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
