@@ -16,7 +16,7 @@ class MenuSeeder extends Seeder
     {
         // データのクリア
         DB::table('menus')->truncate();
-        $menusName = ['腕立て', '腹筋', '懸垂'];
+        $menusName = ['腹筋', 'スクワット', 'ダンベル', 'ウォーキング', 'ランキング'];
         foreach ($menusName as $menuName) {
             DB::table('menus')->insert(['menuName' => $menuName]);
         }
