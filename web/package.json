@@ -49,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "netlify-lambda": "^2.0.15",
     "node-sass": "^5.0.0"
   }
 }
