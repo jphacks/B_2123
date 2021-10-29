@@ -16,12 +16,11 @@ class UserMenuController extends Controller
     $records = $userMenu->where('userId', $userId)->get();
     return response()->json($records);
   }
-  public function index_group($groupId, Group $group, User $user)
+  public function index_group($groupId, Group $group, UserMenu $userMenu)
   {
     try {
       $group->groupId_check($groupId);
-      $group_users = $user->where('groupId', $groupId)->get();
-      $ranking = $group_users->join('user_menus', 'users.userId', '=', 'user_menus.userId')->orderBy('numberOfTimes', 'desc')->take(5)->get();
+      $ranking = $userMenu->orderBy('numberOfTimes', 'desc')->join('users', 'user_menus.userId', '=', 'users.userId')->take(5)->get();
       return response()->json($ranking);
     } catch (\Exception $e) {
       return response()->json(['message' => $e->getMessage()], 404);
