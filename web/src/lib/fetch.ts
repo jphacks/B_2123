@@ -4,7 +4,7 @@ import { User } from "../types/user";
 
 export const getUser = async (userId: string) => {
   const user = (await (
-    await fetch(`http://test-use-domain.net/api/users?userId=${userId}`)
+    await fetch(`https://test-use-domain.net/api/users?userId=${userId}`)
   ).json()) as User;
 
   return user;
@@ -12,7 +12,7 @@ export const getUser = async (userId: string) => {
 
 export const getMenus = async () => {
   const menu = (await (
-    await fetch(`http://test-use-domain.net/api/menus`)
+    await fetch(`https://test-use-domain.net/api/menus`)
   ).json()) as Menu[];
 
   return menu;
@@ -21,7 +21,7 @@ export const getMenus = async () => {
 export const getGroupUsers = async (groupId: string) => {
   const user = (
     await (
-      await fetch(`http://test-use-domain.net/api/users/${groupId}`)
+      await fetch(`https://test-use-domain.net/api/users/${groupId}`)
     ).json()
   ).users as User[];
 
@@ -30,7 +30,7 @@ export const getGroupUsers = async (groupId: string) => {
 
 export const getRank = async (groupId: string) => {
   const rank = (await (
-    await fetch(`http://test-use-domain.net/api/records/${groupId}`)
+    await fetch(`https://test-use-domain.net/api/records/${groupId}`)
   ).json()) as Rank[];
 
   return rank;
