@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Menu;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\UserMenu;
@@ -10,17 +11,23 @@ use Illuminate\Support\Facades\Validator;
 
 class UserMenuController extends Controller
 {
-  public function index(UserMenu $userMenu)
+  public function index(Request $request, UserMenu $userMenu)
   {
-    $ranking = $userMenu->orderBy('numberOfTimes', 'desc')->take(10)->join('users', 'user_menus.userId', '=', 'users.userId')->get();
-    return response()->json($ranking);
+    $userId = $request->userId;
+    $records = $userMenu->where('userId', $userId)->get();
+    return response()->json($records);
   }
-  public function index_group($groupId, Group $group, User $user)
+  public function index_group($groupId, Group $group, UserMenu $userMenu, Menu $menu)
   {
     try {
       $group->groupId_check($groupId);
-      $group_users = $user->where('groupId', $groupId)->get();
-      $ranking = $group_users->join('user_menus', 'users.userId', '=', 'user_menus.userId')->orderBy('numberOfTimes', 'desc')->take(5)->get();
+      $ranking = $userMenu->orderBy('numberOfTimes', 'desc')->join('users', 'user_menus.userId', '=', 'users.userId')->where('groupId', $groupId)->take(5)->get();
+      // menu別ランキング
+      // $menus = Menu::all();
+      // foreach ($menus as $menu) {
+      //   $menuId =  $menu->id;
+        
+      // }
       return response()->json($ranking);
     } catch (\Exception $e) {
       return response()->json(['message' => $e->getMessage()], 404);
@@ -32,15 +39,14 @@ class UserMenuController extends Controller
     try {
       // バリデーションルール
       $validator = Validator::make($params, [
-        'userId' => ['required', 'integer'],
-        'menuId' => ['required', 'integer'],
-        'numberOfTimes' => ['required', 'integer']
+        'userId' => ['required', 'string', 'exists:users,userId'],
+        'menuId' => ['required', 'integer', 'exists:menus,id'],
+        'numberOfTimes' => ['required', 'integer', 'min:1']
       ]);
       // バリデーション
       if($validator->fails()) {
         throw new \Exception("入力内容にエラーがあります", 1);
       }
-      // メニューの存在チェック
       $result = $userMenu->create($params);
       if(!isset($result)) {
         throw new \Exception("登録に失敗しました", 1);
