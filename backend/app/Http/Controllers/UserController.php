@@ -10,10 +10,20 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request, User $user)
     {
-        $users = User::all();
-        return response()->json($users);
+        $userId = $request->userId;
+        try {
+            $res = $user->userId_check($userId);
+
+            if(!$res) {
+                throw new \Exception("そのuserIdは存在しません");
+            }
+            $user_info = $user->with('menus')->find($userId);
+            return response()->json($user_info);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
     }
     public function create(Request $request, User $user, Group $group)
     {
@@ -35,9 +45,10 @@ class UserController extends Controller
             if($result == null) {
                 throw new \Exception("登録に失敗しました");
             }
-            $group->create(['groupId' => $params['groupId']]);
+            // グループID作成
+            $group->firstOrCreate(['groupId' => $params['groupId']]);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 404);
+            return response()->json(['message' => $e->getMessage()], 400);
         }
         return response()->json(['message' => 'ユーザー登録しました'], 200);
     }
@@ -48,7 +59,7 @@ class UserController extends Controller
             $users = $user->where('groupId', $groupId)->get();
             return response()->json(['users' => $users]);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 404);
+            return response()->json(['message' => $e->getMessage()], 400);
         }
     }
 }
