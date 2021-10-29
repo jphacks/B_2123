@@ -4,4 +4,4 @@ export type Menu = {
 };
 
 export const getMenuById = (menus: Menu[], menuId: string) =>
-  menus.filter((_) => _.id == menuId)[0];
+  menus.filter((_) => String(_.id) === String(menuId))[0];

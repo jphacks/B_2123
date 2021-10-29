@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { LineChart } from "../components/LineChart";
-import { Grid, Box, Container } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Grid } from "@mui/material";
 import { UserMenuCard } from "../components/UserMenuCard";
 import { UserMenu } from "../types/user";
 import { getMenus } from "../lib/fetch";

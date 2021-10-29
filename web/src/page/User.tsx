@@ -19,7 +19,7 @@ export const User = () => {
       const user = await getUser(id);
       setUser(user);
     })();
-  }, []);
+  }, [id]);
 
   return (
     <div className="wrapper">

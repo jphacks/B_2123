@@ -13,7 +13,7 @@ export const UserList = () => {
       const users = await getGroupUsers(id);
       setGroupUsers(users);
     })();
-  }, []);
+  }, [id]);
 
   const history = useHistory();
 
