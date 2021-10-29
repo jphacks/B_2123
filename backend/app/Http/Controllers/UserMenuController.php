@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Menu;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\UserMenu;
@@ -32,15 +33,14 @@ class UserMenuController extends Controller
     try {
       // バリデーションルール
       $validator = Validator::make($params, [
-        'userId' => ['required', 'string'],
-        'menuId' => ['required', 'integer'],
+        'userId' => ['required', 'string', 'exists:users,userId'],
+        'menuId' => ['required', 'integer', 'exists:menus,id'],
         'numberOfTimes' => ['required', 'integer']
       ]);
       // バリデーション
       if($validator->fails()) {
         throw new \Exception("入力内容にエラーがあります", 1);
       }
-      // メニューの存在チェック
       $result = $userMenu->create($params);
       if(!isset($result)) {
         throw new \Exception("登録に失敗しました", 1);
