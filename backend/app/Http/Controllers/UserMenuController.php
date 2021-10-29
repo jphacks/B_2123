@@ -17,11 +17,17 @@ class UserMenuController extends Controller
     $records = $userMenu->where('userId', $userId)->get();
     return response()->json($records);
   }
-  public function index_group($groupId, Group $group, UserMenu $userMenu)
+  public function index_group($groupId, Group $group, UserMenu $userMenu, Menu $menu)
   {
     try {
       $group->groupId_check($groupId);
-      $ranking = $userMenu->orderBy('numberOfTimes', 'desc')->join('users', 'user_menus.userId', '=', 'users.userId')->take(5)->get();
+      $ranking = $userMenu->orderBy('numberOfTimes', 'desc')->join('users', 'user_menus.userId', '=', 'users.userId')->where('groupId', $groupId)->take(5)->get();
+      // menu別ランキング
+      // $menus = Menu::all();
+      // foreach ($menus as $menu) {
+      //   $menuId =  $menu->id;
+        
+      // }
       return response()->json($ranking);
     } catch (\Exception $e) {
       return response()->json(['message' => $e->getMessage()], 404);
@@ -35,7 +41,7 @@ class UserMenuController extends Controller
       $validator = Validator::make($params, [
         'userId' => ['required', 'string', 'exists:users,userId'],
         'menuId' => ['required', 'integer', 'exists:menus,id'],
-        'numberOfTimes' => ['required', 'integer']
+        'numberOfTimes' => ['required', 'integer', 'min:1']
       ]);
       // バリデーション
       if($validator->fails()) {

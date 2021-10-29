@@ -46,7 +46,7 @@ class UserController extends Controller
                 throw new \Exception("登録に失敗しました");
             }
             // グループID作成
-            $group->firstOrCreate(['groupId' => $params['groupId']]); // firstOrcreate
+            $group->firstOrCreate(['groupId' => $params['groupId']]);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
