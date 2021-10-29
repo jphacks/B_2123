@@ -1,4 +1,5 @@
 import { Menu } from "../types/Menu";
+import { Rank } from "../types/rank";
 import { User } from "../types/user";
 
 export const getUser = async (userId: string) => {
@@ -25,4 +26,12 @@ export const getGroupUsers = async (groupId: string) => {
   ).users as User[];
 
   return user;
+};
+
+export const getRank = async (groupId: string) => {
+  const rank = (await (
+    await fetch(`http://test-use-domain.net/api/records/${groupId}`)
+  ).json()) as Rank[];
+
+  return rank;
 };
