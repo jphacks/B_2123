@@ -1,29 +1,16 @@
-import { Grid, Box, Container } from "@mui/material";
 import React from "react";
 import "./App.css";
-import { Footer } from "./containers/Footer";
-import { Header } from "./containers/Header";
-import { Ranking } from "./containers/Ranking";
-import { Users } from "./containers/UserList";
+import { Route, BrowserRouter as Router } from "react-router-dom";
+import { Home } from "./page/Home";
+import { User } from "./page/User";
 
 function App() {
   return (
     <div className="wrapper">
-      <Header />
-      <Container>
-        <h2 style={{ textAlign: "center" }}>グループ名</h2>
-        <Box sx={{ width: "100%" }}>
-          <Grid container spacing={8}>
-            <Grid xs={6} item>
-              <Users />
-            </Grid>
-            <Grid item xs={6}>
-              <Ranking />
-            </Grid>
-          </Grid>
-        </Box>
-      </Container>
-      <Footer />
+      <Router>
+        <Route exact path="/group/:id" component={Home}></Route>
+        <Route exact path="/user/:id" component={User}></Route>
+      </Router>
     </div>
   );
 }
