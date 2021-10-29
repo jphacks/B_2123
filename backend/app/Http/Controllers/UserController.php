@@ -15,8 +15,9 @@ class UserController extends Controller
         $userId = $request->userId;
         try {
             $res = $user->userId_check($userId);
-            if(!isset($res)) {
-                throw new \Exception("そのuserIdは存在しません", 1);
+
+            if(!$res) {
+                throw new \Exception("そのuserIdは存在しません");
             }
             $user_info = $user->with('menus')->find($userId);
             return response()->json($user_info);
