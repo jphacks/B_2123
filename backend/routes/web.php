@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Menu;
 use Illuminate\Support\Facades\Route;
+use PhpParser\Node\Stmt\TryCatch;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
