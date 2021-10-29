@@ -33,7 +33,7 @@ class UserMenuController extends Controller
     try {
       // バリデーションルール
       $validator = Validator::make($params, [
-        'userId' => ['required', 'integer'],
+        'userId' => ['required', 'string'],
         'menuId' => ['required', 'integer'],
         'numberOfTimes' => ['required', 'integer']
       ]);

@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
             [
                 'userId' => 'b1',
                 'groupId' => '1',
-                'slackName' => 'testus;er2'
+                'slackName' => 'testuser2'
             ],
         ];
         foreach ($users as $user) {
