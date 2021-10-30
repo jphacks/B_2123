@@ -29,50 +29,50 @@ menu_dict: dict[str, dict[str, Union[int, str]]] = json.load(
 print(menu_dict)
 
 
-# メンションあり応答
-@respond_to("こんにちは")
-def greet(message):
-    global user_status
-    # メンションして応答
-    user_id: str = message.body["user"]
-    user_status[user_id] = 0
-    try:
-        info = fx.get_user_name(user_id)
-        message.reply(f"やぁ，こんにちは {info}")
-    except ValueError:
-        message.reply(f"知らない顔だな，入会しなさい\n「入会」 と返信してくれ")
+# # メンションあり応答
+# @respond_to("こんにちは")
+# def greet(message):
+#     global user_status
+#     # メンションして応答
+#     user_id: str = message.body["user"]
+#     user_status[user_id] = 0
+#     try:
+#         info = fx.get_user_name(user_id)
+#         message.reply(f"やぁ，こんにちは {info}")
+#     except ValueError:
+#         message.reply(f"知らない顔だな，入会しなさい\n「入会」 と返信してくれ")
 
 
 # メンションなし応答
-@respond_to("入会")
-def enter(message):
-    global user_status
-    user_id: str = message.body["user"]
-    try:
-        fx.get_user_name(user_id)[0]
-        message.reply("はっはっは、 君はもう仲間じゃないっか")
-        user_status[user_id] = 0
-    except ValueError:
-        message.reply("入会希望だな，名前を教えてくれ")
-        user_status[user_id] = 1
-        print("入会")
-    # メンションなしで応答
+# @respond_to("入会")
+# def enter(message):
+#     global user_status
+#     user_id: str = message.body["user"]
+#     try:
+#         fx.get_user_name(user_id)[0]
+#         message.reply("はっはっは、 君はもう仲間じゃないっか")
+#         user_status[user_id] = 0
+#     except ValueError:
+#         message.reply("入会希望だな，名前を教えてくれ")
+#         user_status[user_id] = 1
+#         print("入会")
+# メンションなしで応答
 
 
-@respond_to("テスト")
-def test(message):
-    global user_status
-    user_id: str = message.body["user"]
-    user_status[user_id] = 0
-    print(message.body)
-    message.reply("これはテストです")
+# @respond_to("テスト")
+# def test(message):
+#     global user_status
+#     user_id: str = message.body["user"]
+#     user_status[user_id] = 0
+#     print(message.body)
+#     message.reply("これはテストです")
 
 
-@respond_to("メニュー")
-def menu(message):
-    global forbitten_list
-    global menu_dict
-    message.reply(f"今登録されているメニューは、{'・'.join(menu_dict.keys())} があるよ")
+# @respond_to("メニュー")
+# def menu(message):
+#     global forbitten_list
+#     global menu_dict
+#     message.reply(f"今登録されているメニューは、{'・'.join(menu_dict.keys())} があるよ")
 
 
 # @default_reply
@@ -85,6 +85,8 @@ def all_respond_func(message):
     global tmp_menu
     global commands
 
+    process: int = 0
+
     group_id: str = message.body["source_team"]
     user_id: str = message.body["user"]
     content: str = message.body["text"]
@@ -93,12 +95,14 @@ def all_respond_func(message):
 
     if user_id in user_status.keys():
         if user_status[user_id] == 1:
+            process = 1
             user_name = content
             message.reply(f"ユーザー名は 「{user_name}」 だね")
             fx.user_add(group_id=group_id, user_id=user_id, user_name=user_name)
             user_status[user_id] = 0
 
         elif user_status[user_id] == 2:
+            process = 1
             menu_name: str = content
             if menu_name in forbitten_list:
                 message.send("こらっ！ そんなメニューやっちゃだめだぞ\n君のマッスルが泣いてるぜ")
@@ -115,6 +119,7 @@ def all_respond_func(message):
                     f"おっと，私の知らないメニューか，勉強しておこう\nメニュー : {'・'.join(menu_dict.keys())}から選んでくれたまえ\n"
                 )
         elif user_status[user_id] == 3:
+            process = 1
             try:
                 matched_item = re.match("[0-9]+", re.sub(",", "", content)).group()
                 # matched_item: str = re.search(pattern, content)
@@ -129,11 +134,26 @@ def all_respond_func(message):
                 user_status[user_id] = 0
             except ValueError:
                 message.reply("おっと！ 数値を入力してくれよ")
-        else:
-            message.send(f"今あるコマンドは {' '.join(commands)} だね\n私の知っている言葉で頼むよ")
+        # else:
+        #     message.send(f"今あるコマンドは {' '.join(commands)} だね\n私の知っている言葉で頼むよ")
+    if not process:
+        user_status[user_id] = 0
+        if "こんにちは" in content:
+            try:
+                info = fx.get_user_name(user_id)
+                message.reply(f"やぁ，こんにちは {info}")
+            except ValueError:
+                message.reply(f"知らない顔だな，入会しなさい\n「入会」 と返信してくれ")
+        elif "入会" in content:
+            try:
+                fx.get_user_name(user_id)[0]
+                message.reply("はっはっは、 君はもう仲間じゃないっか")
+            except ValueError:
+                message.reply("入会希望だな，名前を教えてくれ")
+                user_status[user_id] = 1
+                print("入会")
 
-    else:
-        if "仲間" in content:
+        elif "仲間" in content:
             l: dict[str, str] = fx.user_list(group_id=group_id)
             print(l)
             if len(l) == 0:
@@ -142,6 +162,7 @@ def all_respond_func(message):
                 message.reply(f"うん、仲間は君だけなのか\nもっと誘いなよ")
             else:
                 message.reply(f"今の仲間は彼らだね\n{ ', '.join(l.values() )}")
+
         elif "記録" in content:
             user_status[user_id] = 2
             message.reply(
@@ -153,14 +174,21 @@ def all_respond_func(message):
                 f"そう，走る王様はこの私...\n君たちのグループのランキングはこれだね\n{fx.ranking(group_id= group_id)}"
             )
 
+        elif "メニュー" in content:
+            message.reply(f"今登録されているメニューは、{'・'.join(menu_dict.keys())} があるよ")
+
+        elif "テスト" in content:
+            print(message.body)
+            message.reply(f"これはテストです\n{message.body}")
+
         else:
             message.send(f"今あるコマンドは {' '.join(commands)} だね\n私の知っている言葉で頼むよ")
         # message.send(slackbot_settings.DEFAULT_REPLY)
 
 
-@default_reply
-def my_default_handler(message):
-    text = message.body["text"]  # メッセージを取り出す
-    # 送信メッセージを作る。改行やトリプルバッククォートで囲む表現も可能
-    msg = "あなたの送ったメッセージは\n```" + text + "```"
-    message.reply(msg)  # メンション
+# @default_reply
+# def my_default_handler(message):
+#     text = message.body["text"]  # メッセージを取り出す
+#     # 送信メッセージを作る。改行やトリプルバッククォートで囲む表現も可能
+#     msg = "あなたの送ったメッセージは\n```" + text + "```"
+#     message.reply(msg)  # メンション
