@@ -1,9 +1,10 @@
 import json
 import os
+import re
 from pathlib import Path
 from typing import Union
 
-from slackbot.bot import default_reply, listen_to, respond_to
+from slackbot.bot import default_reply, respond_to
 
 import func as fx
 
@@ -13,8 +14,10 @@ import func as fx
 # 3 数値入力
 status = 0
 user_status: dict[str, int] = {}
+commands = ["こんにちは", "入会", "仲間", "メニュー", "記録", "ランキング"]
 
 forbitten_list = ["かえる跳び"]
+tmp_menu: str = ""
 
 os.chdir(Path(__file__).parents[2])
 print(os.getcwd())
@@ -25,19 +28,17 @@ menu_dict: dict[str, dict[str, Union[int, str]]] = json.load(
 
 print(menu_dict)
 
-tmp_menu: str = ""
-
 
 # メンションあり応答
 @respond_to("こんにちは")
 def greet(message):
-    global status
+    global user_status
     # メンションして応答
     user_id: str = message.body["user"]
     user_status[user_id] = 0
     try:
         info = fx.get_user_name(user_id)
-        message.reply(f"やぁ，こんにちは {info[1]}")
+        message.reply(f"やぁ，こんにちは {info}")
     except ValueError:
         message.reply(f"知らない顔だな，入会しなさい\n「入会」 と返信してくれ")
 
@@ -45,7 +46,7 @@ def greet(message):
 # メンションなし応答
 @respond_to("入会")
 def enter(message):
-    global status
+    global user_status
     user_id: str = message.body["user"]
     try:
         fx.get_user_name(user_id)[0]
@@ -60,7 +61,8 @@ def enter(message):
 
 @respond_to("テスト")
 def test(message):
-    global status
+    global user_status
+    user_id: str = message.body["user"]
     user_status[user_id] = 0
     print(message.body)
     message.reply("これはテストです")
@@ -70,21 +72,24 @@ def test(message):
 def menu(message):
     global forbitten_list
     global menu_dict
-    message.reply(f"今登録されているメニューは、{' ・'.join(menu_dict.keys())} があるよ")
+    message.reply(f"今登録されているメニューは、{'・'.join(menu_dict.keys())} があるよ")
 
 
-@default_reply
-def my_default_handler(message):
-    global status
+# @default_reply
+# def my_default_handler(message):
+@respond_to(r".+")
+def all_respond_func(message):
+    global user_status
     global forbitten_list
     global menu_dict
     global tmp_menu
+    global commands
 
     group_id: str = message.body["source_team"]
     user_id: str = message.body["user"]
     content: str = message.body["text"]
 
-    print(content)
+    print(f"{content}")
 
     if user_id in user_status.keys():
         if user_status[user_id] == 1:
@@ -106,10 +111,15 @@ def my_default_handler(message):
                 user_status[user_id] = 3
 
             else:
-                message.reply("おっと，私の知らないメニューか，勉強しておこう\nメニューから選んでくれたまえ\n")
+                message.reply(
+                    f"おっと，私の知らないメニューか，勉強しておこう\nメニュー : {'・'.join(menu_dict.keys())}から選んでくれたまえ\n"
+                )
         elif user_status[user_id] == 3:
             try:
-                menu_times: int = int(content)
+                matched_item = re.match("[0-9]+", re.sub(",", "", content)).group()
+                # matched_item: str = re.search(pattern, content)
+                menu_times = int(matched_item)
+
                 message.reply(
                     f"{tmp_menu} を {menu_times} {menu_dict[tmp_menu]['unit']} だね\nしっかり記録しておこう"
                 )
@@ -119,6 +129,8 @@ def my_default_handler(message):
                 user_status[user_id] = 0
             except ValueError:
                 message.reply("おっと！ 数値を入力してくれよ")
+        else:
+            message.send(f"今あるコマンドは {' '.join(commands)} だね\n私の知っている言葉で頼むよ")
 
     else:
         if "仲間" in content:
@@ -132,12 +144,23 @@ def my_default_handler(message):
                 message.reply(f"今の仲間は彼らだね\n{ ', '.join(l.values() )}")
         elif "記録" in content:
             user_status[user_id] = 2
-            message.reply("記録しに来てくれたか、うれしいじゃないか！\n今日のメニューを教えてくれ")
+            message.reply(
+                f"記録しに来てくれたか、うれしいじゃないか！\n今日のメニュー「{'・'.join(menu_dict.keys())}」から教えてくれ"
+            )
 
         elif "ランキング" in content:
-            message.send(f"君たちのグループのランキングはこれだね\n{fx.ranking(group_id)}")
+            message.reply(
+                f"そう，走る王様はこの私...\n君たちのグループのランキングはこれだね\n{fx.ranking(group_id= group_id)}"
+            )
 
         else:
-            commands = ["こんにちは", "入会", "仲間", "メニュー", "記録", "ランキング"]
-            message.send(f"今あるコマンドは {' '.join(commands)} だね")
+            message.send(f"今あるコマンドは {' '.join(commands)} だね\n私の知っている言葉で頼むよ")
         # message.send(slackbot_settings.DEFAULT_REPLY)
+
+
+@default_reply
+def my_default_handler(message):
+    text = message.body["text"]  # メッセージを取り出す
+    # 送信メッセージを作る。改行やトリプルバッククォートで囲む表現も可能
+    msg = "あなたの送ったメッセージは\n```" + text + "```"
+    message.reply(msg)  # メンション
