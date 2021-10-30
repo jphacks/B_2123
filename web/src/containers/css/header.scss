@@ -1,0 +1,65 @@
+.header {
+  background-image: url("../../assets/background.jpg");
+  width: 100%;
+  height: 300px;
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($color: #000000, $alpha: 0.5);
+    z-index: 0;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+
+  &__subtitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    position: absolute;
+    left: -110px;
+    top: -10px;
+    &::before {
+      position: absolute;
+      content: "";
+      display: block;
+      background-color: white;
+      height: 30px;
+      width: 4px;
+      top: 0;
+      left: -20px;
+      transform: rotate(-25deg);
+    }
+    &::after {
+      position: absolute;
+      content: "";
+      display: block;
+      background-color: white;
+      height: 30px;
+      width: 4px;
+      top: 0;
+      right: -20px;
+      transform: rotate(25deg);
+    }
+    transform: rotate(-15deg);
+  }
+
+  &__title {
+    color: white;
+    font-size: 48px;
+  }
+
+  &__title_wrapper {
+    z-index: 1;
+    position: relative;
+  }
+}

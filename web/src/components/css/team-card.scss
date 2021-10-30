@@ -1,0 +1,14 @@
+.team-card {
+  border-radius: 20px;
+  padding: 25px 30px;
+  display: flex;
+  justify-content: space-between;
+  &__name {
+    margin: 0;
+    font-size: 18px;
+  }
+  &__rank {
+    color: #ff8b8b;
+    font-weight: bold;
+  }
+}

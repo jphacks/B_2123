@@ -1,0 +1,16 @@
+.title {
+  color: #1e1e1e;
+  text-align: center;
+  display: inline-block;
+  position: relative;
+  &::before {
+    width: 80%;
+    height: 3px;
+    content: "";
+    background-color: #e63124;
+    display: block;
+    position: absolute;
+    left: 10%;
+    bottom: -5px;
+  }
+}
