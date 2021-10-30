@@ -37,7 +37,7 @@ class UserControllerTest extends TestCase
     }
     public function test_index_group()
     {
-        $groupId = 'a100';
+        $groupId = 'a10000a';
         Group::create(['groupId' => $groupId]);
         $response = $this->get("/api/users/${groupId}");
         $response->assertOk();
