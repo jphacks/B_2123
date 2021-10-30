@@ -29,54 +29,6 @@ menu_dict: dict[str, dict[str, Union[int, str]]] = json.load(
 print(menu_dict)
 
 
-# # メンションあり応答
-# @respond_to("こんにちは")
-# def greet(message):
-#     global user_status
-#     # メンションして応答
-#     user_id: str = message.body["user"]
-#     user_status[user_id] = 0
-#     try:
-#         info = fx.get_user_name(user_id)
-#         message.reply(f"やぁ，こんにちは {info}")
-#     except ValueError:
-#         message.reply(f"知らない顔だな，入会しなさい\n「入会」 と返信してくれ")
-
-
-# メンションなし応答
-# @respond_to("入会")
-# def enter(message):
-#     global user_status
-#     user_id: str = message.body["user"]
-#     try:
-#         fx.get_user_name(user_id)[0]
-#         message.reply("はっはっは、 君はもう仲間じゃないっか")
-#         user_status[user_id] = 0
-#     except ValueError:
-#         message.reply("入会希望だな，名前を教えてくれ")
-#         user_status[user_id] = 1
-#         print("入会")
-# メンションなしで応答
-
-
-# @respond_to("テスト")
-# def test(message):
-#     global user_status
-#     user_id: str = message.body["user"]
-#     user_status[user_id] = 0
-#     print(message.body)
-#     message.reply("これはテストです")
-
-
-# @respond_to("メニュー")
-# def menu(message):
-#     global forbitten_list
-#     global menu_dict
-#     message.reply(f"今登録されているメニューは、{'・'.join(menu_dict.keys())} があるよ")
-
-
-# @default_reply
-# def my_default_handler(message):
 @respond_to(r".+")
 def all_respond_func(message):
     global user_status
@@ -144,6 +96,7 @@ def all_respond_func(message):
                 message.reply(f"やぁ，こんにちは {info}")
             except ValueError:
                 message.reply(f"知らない顔だな，入会しなさい\n「入会」 と返信してくれ")
+
         elif "入会" in content:
             try:
                 fx.get_user_name(user_id)[0]
