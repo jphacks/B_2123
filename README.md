@@ -16,6 +16,7 @@
 
 ### 解決出来ること
 - 運動不足の解消
+- 運動を通したグループのコミュニケーション
 ### 今後の展望
 - 運動の強度に合わせたパラメータの作成
 - ワークスペースをまたいだ管理などの実装
@@ -48,3 +49,7 @@
 #### ハッカソンで開発した独自機能・技術
    - [botmodule](./slack/src/botmodule.py)
        - 応答メッセージの処理に力を入れました
+
+
+## デモ
+[workspace](https://join.slack.com/t/mr-muscle/shared_invite/zt-xolut7c3-IydDtQuZzv75hkJEj9mS~g) の招待リンク（2021/11/5 まで有効）
