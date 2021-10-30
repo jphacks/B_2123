@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Menu;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -26,6 +27,6 @@ class MenuControllerTest extends TestCase
         $response = $this->get('/api/menus');
         $response->assertStatus(200);
         // menuの数
-        $response->assertJsonCount(3);
+        $response->assertJsonCount(Menu::count());
     }
 }

@@ -17,20 +17,27 @@ class UserMenuController extends Controller
     $records = $userMenu->where('userId', $userId)->get();
     return response()->json($records);
   }
-  public function index_group($groupId, Group $group, UserMenu $userMenu, Menu $menu)
+  public function index_group($groupId, Group $group, UserMenu $userMenu)
   {
     try {
       $group->groupId_check($groupId);
       $ranking = $userMenu->orderBy('numberOfTimes', 'desc')->join('users', 'user_menus.userId', '=', 'users.userId')->where('groupId', $groupId)->take(5)->get();
-      // menu別ランキング
-      // $menus = Menu::all();
-      // foreach ($menus as $menu) {
-      //   $menuId =  $menu->id;
-        
-      // }
-      return response()->json($ranking);
+      $new_ranking = [];
+      $ranking_users = [];
+      if(isset($ranking)) {
+        foreach ($ranking as $record) {
+          $userId = $record->userId;
+          if(in_array($userId, $ranking_users)) {
+            // スルー
+          } else {
+            $new_ranking[] = $record;
+            $ranking_users[] = $userId;
+          }
+        }
+      }
+      return response()->json($new_ranking);
     } catch (\Exception $e) {
-      return response()->json(['message' => $e->getMessage()], 404);
+      return response()->json(['message' => $e->getMessage()], 400);
     }
   }
   public function create(Request $request, UserMenu $userMenu)
@@ -53,7 +60,7 @@ class UserMenuController extends Controller
       }
       return response()->json(['message' => '登録しました'], 200);
     } catch (\Exception $e) {
-      return response()->json(['message' => $e->getMessage()], 404);
+      return response()->json(['message' => $e->getMessage()], 400);
     }
   }
 }
