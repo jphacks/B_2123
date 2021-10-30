@@ -1,10 +1,10 @@
-# サンプル（プロダクト名）
+# nikutai（Slackで動く運動記録アプリ）
 
 [![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2021/07/JPHACKS2021_ogp.jpg)](https://www.youtube.com/watch?v=LUPQFB4QyVo)
 
 ## 製品概要
 ### 背景(製品開発のきっかけ、課題等）
-- コロナ渦によるリモートワークが進む中、通勤・通学がなくなり運動不足になる人が増えた
+- コロナ禍によるリモートワークが進む中、通勤・通学がなくなり運動不足になる人が増えた
 - リモートワークに Slack などのコミュニケーションツールが導入されている
 ### 製品説明（具体的な製品の説明）
 - 運動不足の解消に向けた、Slack で動作する運動管理ツール
@@ -20,27 +20,31 @@
 - 運動の強度に合わせたパラメータの作成
 - ワークスペースをまたいだ管理などの実装
 ### 注力したこと（こだわり等）
-* 
-* 
+- Python の開発でできるだけモダンな開発を取り入れるようにしたこと
+    - Pyenv & Poetry によるパッケージ管理
+    - Docstringの整備
+    - Typing (型ヒント）の整備
 
 ## 開発技術
 ### 活用した技術
 #### API・データ
 * SlackAPI
-* 
 
 #### フレームワーク・ライブラリ・モジュール
-* Python (Slackbot)
-* PHP (Laravel)
-
-#### デバイス
-* 自宅サーバー
+- Web UI : [doc](web/README.md)
+    - TypeScript
+    - React
+    - @netlify
+    
+- Back Ground : [doc](backend/README.md)
+    - PHP
+    - Laravel
+    - SQLite
+- Slackbot : [doc](slack/README.md)
+    - Python
+    - Slackbot
 
 ### 独自技術
 #### ハッカソンで開発した独自機能・技術
-* 独自で開発したものの内容をこちらに記載してください
-* 特に力を入れた部分をファイルリンク、またはcommit_idを記載してください。
-
-#### 製品に取り入れた研究内容（データ・ソフトウェアなど）（※アカデミック部門の場合のみ提出必須）
-* 
-* 
+   - [botmodule](./slack/src/botmodule.py)
+       - 応答メッセージの処理に力を入れました
