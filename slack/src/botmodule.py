@@ -111,8 +111,8 @@ def all_respond_func(message):
             print(l)
             if len(l) == 0:
                 message.reply(f"ウム、まだ仲間は居ないようだね\nさぁ，入会するんだ")
-            if len(l) == 1 and l.keys()[0] == user_id:
-                message.reply(f"うん、仲間は君だけなのか\nもっと誘いなよ")
+            # if len(l) == 1 and l.keys()[0] == user_id:
+            #     message.reply(f"うん、仲間は君だけなのか\nもっと誘いなよ")
             else:
                 message.reply(f"今の仲間は彼らだね\n{ ', '.join(l.values() )}")
 
